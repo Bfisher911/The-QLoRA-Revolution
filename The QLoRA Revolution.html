@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The QLoRA Revolution: Efficient LLM Fine-Tuning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F2F2F2;
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            line-height: 1;
+            color: #0077C0;
+            transform: translateY(20px);
+        }
+        .kpi-value {
+            font-weight: 900;
+            color: #00A1E4;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-center" style="color: #005082;">The QLoRA Revolution</h1>
+            <p class="text-center text-md md:text-lg" style="color: #0077C0;">Visualizing Efficient Large Language Model Fine-Tuning</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="intro" class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: #005082;">The Challenge: Customizing Giant AI Models</h2>
+            <p class="max-w-3xl mx-auto text-lg">Large Language Models (LLMs) have billions of parameters, making traditional fine-tuning incredibly expensive and resource-intensive. How can we specialize these powerful models without needing a supercomputer? The answer lies in a technique called QLoRA.</p>
+        </section>
+
+        <section id="qlora-vs-full" class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-center" style="color: #005082;">The QLoRA Efficiency Leap</h3>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="parameterChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-center">QLoRA freezes the vast majority of the model's weights and only trains a tiny fraction of new "adapter" parameters. In our lab, we trained just **0.63%** of the total parameters, drastically reducing memory and compute needs.</p>
+                </div>
+                <div class="card flex flex-col justify-center items-center text-center">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #005082;">Memory Footprint Reduction</h3>
+                    <p class="text-lg mb-4">From 16-bit to 4-bit Precision</p>
+                    <div class="flex items-center justify-center space-x-4">
+                        <div class="text-center">
+                            <div class="text-5xl font-black" style="color: #0077C0;">16</div>
+                            <div class="text-sm uppercase font-semibold">Traditional</div>
+                        </div>
+                        <div class="text-5xl font-light" style="color: #00A1E4;">→</div>
+                        <div class="text-center">
+                            <div class="text-5xl font-black kpi-value">4</div>
+                            <div class="text-sm uppercase font-semibold">With QLoRA</div>
+                        </div>
+                    </div>
+                    <p class="mt-4 max-w-sm">By quantizing the model to 4-bit precision, QLoRA reduces the memory required to load the model by up to **75%**, making it possible to run on a single, free-tier GPU.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow" class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8" style="color: #005082;">The End-to-End MLOps Workflow</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center md:items-start text-center gap-4">
+                <div class="card flex-1 min-w-[200px]">
+                    <div class="text-4xl mb-2">⚙️</div>
+                    <h3 class="font-bold text-lg">1. Setup</h3>
+                    <p class="text-sm">Configure Colab GPU & Install Dependencies</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="card flex-1 min-w-[200px]">
+                    <div class="text-4xl mb-2">📚</div>
+                    <h3 class="font-bold text-lg">2. Data Prep</h3>
+                    <p class="text-sm">Load & Format `daily_dialog` Dataset</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="card flex-1 min-w-[200px]">
+                    <div class="text-4xl mb-2">🧠</div>
+                    <h3 class="font-bold text-lg">3. Fine-Tune</h3>
+                    <p class="text-sm">Train Adapters with QLoRA on `gpt-neo-125m`</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="card flex-1 min-w-[200px]">
+                    <div class="text-4xl mb-2">📊</div>
+                    <h3 class="font-bold text-lg">4. Evaluate</h3>
+                    <p class="text-sm">Measure Perplexity & Generate Samples</p>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="card flex-1 min-w-[200px]">
+                    <div class="text-4xl mb-2">🚀</div>
+                    <h3 class="font-bold text-lg">5. Deploy</h3>
+                    <p class="text-sm">Package with FastAPI & Expose with Ngrok</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8" style="color: #005082;">The Results: A Smarter, Specialized Model</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <div class="md:col-span-2 card">
+                    <h3 class="text-2xl font-bold mb-4 text-center" style="color: #005082;">Quantitative Proof: Perplexity Score</h3>
+                     <div class="chart-container h-64 md:h-80">
+                        <canvas id="perplexityChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-center">Perplexity measures how "surprised" a model is by new text. A lower score is better. Fine-tuning caused a **41.7% drop in perplexity**, proving the model became a specialized expert on conversational dialogue.</p>
+                </div>
+                <div class="md:col-span-3 card">
+                    <h3 class="text-2xl font-bold mb-4 text-center" style="color: #005082;">Qualitative Proof: Generated Text</h3>
+                    <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                        <p class="font-mono text-sm"><span class="font-bold">PROMPT:</span> What are you doing this weekend?</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div class="border-l-4 pl-4" style="border-color: #0077C0;">
+                            <h4 class="font-bold">Base Model Output</h4>
+                            <p class="text-sm italic mt-2">"What are you doing this weekend? I'm going to the beach. I'm going to the beach. I'm going to the beach. I'm going to the beach. I'm going to the beach..."</p>
+                            <p class="text-xs font-semibold mt-2" style="color: #0077C0;">Analysis: Repetitive and unhelpful.</p>
+                        </div>
+                        <div class="border-l-4 pl-4" style="border-color: #00A1E4;">
+                            <h4 class="font-bold">Fine-Tuned Model Output</h4>
+                            <p class="text-sm italic mt-2">"What are you doing this weekend? I'm not sure yet. Any suggestions? How about we go to the cinema? There's a new sci-fi movie out."</p>
+                            <p class="text-xs font-semibold mt-2 kpi-value">Analysis: Coherent, contextual, and follows a natural conversational flow.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center pt-8 mt-12 border-t" style="border-color: #0077C0;">
+            <p class="text-sm" style="color: #005082;">This infographic visualizes the process and outcomes from a hands-on lab on fine-tuning and deploying generative AI models.</p>
+            <p class="text-xs mt-2" style="color: #333333;">Powered by Chart.js, Tailwind CSS, and the concepts from the Hugging Face ecosystem.</p>
+        </footer>
+    </main>
+
+    <script>
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const brilliantBlues = {
+            primary: '#00A1E4',
+            secondary: '#0077C0',
+            dark: '#005082',
+            light: '#F2F2F2',
+            text: '#333333'
+        };
+
+        const parameterData = {
+            labels: ['Frozen Base Parameters', 'Trainable Adapter Parameters'],
+            datasets: [{
+                label: 'Parameter Distribution',
+                data: [99.37, 0.63],
+                backgroundColor: [
+                    brilliantBlues.secondary,
+                    brilliantBlues.primary
+                ],
+                borderColor: brilliantBlues.light,
+                borderWidth: 3,
+                hoverOffset: 4
+            }]
+        };
+
+        const parameterConfig = {
+            type: 'doughnut',
+            data: parameterData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                         labels: {
+                            color: brilliantBlues.text,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const perplexityData = {
+            labels: ['Base Model', 'Fine-Tuned Model'],
+            datasets: [{
+                label: 'Perplexity Score (Lower is Better)',
+                data: [55.82, 32.51],
+                backgroundColor: [
+                    brilliantBlues.secondary,
+                    brilliantBlues.primary
+                ],
+                borderColor: [
+                    brilliantBlues.secondary,
+                    brilliantBlues.primary
+                ],
+                borderWidth: 1,
+                borderRadius: 5,
+                barThickness: 50,
+            }]
+        };
+
+        const perplexityConfig = {
+            type: 'bar',
+            data: perplexityData,
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0'
+                        },
+                        ticks: {
+                           color: brilliantBlues.text,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Perplexity Score',
+                            color: brilliantBlues.text
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false
+                        },
+                        ticks: {
+                           color: brilliantBlues.text,
+                           font: {
+                               weight: 'bold'
+                           }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        };
+
+        window.onload = function() {
+            const parameterCtx = document.getElementById('parameterChart').getContext('2d');
+            new Chart(parameterCtx, parameterConfig);
+
+            const perplexityCtx = document.getElementById('perplexityChart').getContext('2d');
+            new Chart(perplexityCtx, perplexityConfig);
+        };
+    </script>
+</body>
+</html>
